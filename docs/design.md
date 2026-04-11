@@ -9,7 +9,9 @@
 - システム構成図：draw.io
 
 ## 業務フロー / 画面遷移図 / ワイヤーフレーム
-Figmaに記載
+Figmaにて作成
+
+https://www.figma.com/design/IyTFoHXk37hss5w02hBsEs/%E7%90%86%E8%A7%A3%E8%B2%A0%E5%82%B5%E3%83%81%E3%82%A7%E3%83%83%E3%82%AB%E3%83%BC%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=lUHVVgz1QZ0eWCkH-1
 
 ## テーブル定義書 / ER図
 ### エンティティ抽出・定義
