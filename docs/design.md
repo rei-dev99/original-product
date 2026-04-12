@@ -15,14 +15,23 @@ https://www.figma.com/design/IyTFoHXk37hss5w02hBsEs/%E7%90%86%E8%A7%A3%E8%B2%A0%
 
 ## テーブル定義書 / ER図
 ### エンティティ抽出・定義
-  - users
+  - ユーザー
+    - status
+    - created_at
+    - deleted_at
+  - ユーザー登録情報
+    - id
+    - user_id
     - email
     - password_digest
+    - created_at
   - 技術分野
+    - id
     - name
   - 質問
-    - content
+    - id
     - category
+    - content
   - 診断結果
     - 依存度
     - スコア(AI、アルゴリズム、db、web、AI依存度)
@@ -32,10 +41,19 @@ https://www.figma.com/design/IyTFoHXk37hss5w02hBsEs/%E7%90%86%E8%A7%A3%E8%B2%A0%
 ```mermaid
 erDiagram
     users ||--o{ results : ユーザーは複数の診断結果を参照できる
+    users ||--|{ user_credentials : ユーザーは登録情報を保存する
     categories ||--o{ questions : "カテゴリーは複数の質問を持つ"
 
     users {
         bigint id PK
+        string status
+        timestamp created_at
+        timestamp deleted_at
+    }
+
+    user_credentials {
+        bigint id PK
+        bigint user_id FK
         string email
         string password_digest
         timestamp created_at
@@ -60,7 +78,7 @@ erDiagram
         integer db_score
         integer web_score
         integer dependency_score
-        string advice
+        text advice
         timestamp created_at
     }
 ```
@@ -70,6 +88,16 @@ erDiagram
 | カラム名 | データ型 | NULL | キー | 初期値 | AUTO INCREMENT |
 | ---- | ---- | ---- | ---- | ---- | ---- |
 | id | integer | NOT NULL | PRIMARY | | YES |
+| status | string | NOT NULL |  | "active" | |
+| created_at | timestamp | NOT NULL | | | |
+| updated_at | timestamp | NOT NULL | | | |
+| deleted_at | timestamp |  | | | |
+
+テーブル：user_credentials
+| カラム名 | データ型 | NULL | キー | 初期値 | AUTO INCREMENT |
+| ---- | ---- | ---- | ---- | ---- | ---- |
+| id | integer | NOT NULL | PRIMARY | | YES |
+| user_id | integer | NOT NULL | FOREIGN | | |
 | email | string | NOT NULL | UNIQUE | | |
 | password_digest | string | NOT NULL | | | |
 | created_at | timestamp | NOT NULL | | | |
