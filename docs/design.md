@@ -42,7 +42,9 @@ https://www.figma.com/design/IyTFoHXk37hss5w02hBsEs/%E7%90%86%E8%A7%A3%E8%B2%A0%
 erDiagram
     users ||--o{ results : ユーザーは複数の診断結果を参照できる
     users ||--|{ user_credentials : ユーザーは登録情報を保存する
+
     categories ||--o{ questions : "カテゴリーは複数の質問を持つ"
+    questions ||--o{ choices : "質問は複数の選択肢を持つ"
 
     users {
         bigint id PK
@@ -68,6 +70,13 @@ erDiagram
         bigint id PK
         bigint category_id FK
         string content
+    }
+
+    choices {
+      bigint id PK
+      bigint question_id FK
+      string content
+      integer score
     }
 
     results {
@@ -115,6 +124,14 @@ erDiagram
 | id | integer | NOT NULL | PRIMARY | | YES |
 | category_id | integer | NOT NULL | FOREIGN | | |
 | content | text | NOT NULL | | | |
+
+テーブル：choices
+| カラム名 | データ型 | NULL | キー | 初期値 | AUTO INCREMENT |
+| ---- | ---- | ---- | ---- | ---- | ---- |
+| id | integer | NOT NULL | PRIMARY | | YES |
+| question_id | integer | NOT NULL | FOREIGN | | |
+| content | string | NOT NULL | | | |
+| score | integer | NOT NULL | | | |
 
 テーブル：results
 | カラム名 | データ型 | NULL | キー | 初期値 | AUTO INCREMENT |
