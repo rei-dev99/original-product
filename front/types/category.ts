@@ -3,6 +3,11 @@ export interface Category {
   name: string,
   questions: [{
     id: number,
-    content: string
+    content: string,
+    choices: [{
+      id: number,
+      content: string,
+      score: number
+    }]
   }]
 }
