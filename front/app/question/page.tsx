@@ -3,6 +3,8 @@
 import { Category } from "@/types/category"
 import fetchCategories from "../lib/categories"
 import { useEffect, useState } from "react"
+import submitAnswers from "../lib/answers"
+import { useRouter } from "next/navigation"
 
 export default function Question() {
   const [categories, setCategories] = useState<Category[]>([])
@@ -24,9 +26,17 @@ export default function Question() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(answers)
+
+    try {
+      const result = await submitAnswers(answers)
+      router.push(`/results/${result.id}`)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (

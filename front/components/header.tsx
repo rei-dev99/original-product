@@ -19,7 +19,7 @@ export default function Header() {
           質問
         </Link>
         <Link
-          href="/result"
+          href="/results"
           className="rounded px-4 py-2 text-white transition-all hover:bg-blue-700"
         >
           診断結果
