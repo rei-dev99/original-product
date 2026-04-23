@@ -15,21 +15,28 @@ import {
 
 export default function ResultDetail() {
   const { id } = useParams()
+  const [isLoading, setIsLoading] = useState(true);
   const [result, setResult] = useState<Result | null>(null)
-
-  const params = useParams()
 
   useEffect(() => {
     const fetchData = async () => {
-      const id = params.id as string
-      const data = await fetchResult(id)
-      setResult(data)
+      setIsLoading(true)
+      try {
+        const data = await fetchResult(id as string)
+        setResult(data)
+      } catch (e) {
+        console.error(e)
+        setResult(null)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     fetchData()
   }, [id])
 
-  if (!result) return <p>loading...</p>
+  if (isLoading) return <p>loading...</p>
+  if (result === null) return <p>データが存在しません。</p>
 
   const data = [
   {
