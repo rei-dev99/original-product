@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_16_214024) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_20_123250) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_16_214024) do
     t.integer "web_score", null: false
   end
 
+  create_table "user_credentials", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "password_digest"
+    t.string "provider", null: false
+    t.string "uid", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["provider", "uid"], name: "index_user_credentials_on_provider_and_uid", unique: true
+    t.index ["user_id"], name: "index_user_credentials_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "deleted_at"
+    t.string "status", default: "active", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "choices", "questions"
   add_foreign_key "questions", "categories"
+  add_foreign_key "user_credentials", "users"
 end
