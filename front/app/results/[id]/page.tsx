@@ -5,6 +5,8 @@ import fetchResult from "../../lib/result"
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { requireAuth } from "@/app/lib/requireAuth";
+
 import {
   Radar,
   RadarChart,
@@ -17,6 +19,11 @@ export default function ResultDetail() {
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true);
   const [result, setResult] = useState<Result | null>(null)
+
+  useEffect(() => {
+    const session = async () => await requireAuth()
+    session()
+  })
 
   useEffect(() => {
     const fetchData = async () => {

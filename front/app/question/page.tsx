@@ -5,6 +5,7 @@ import fetchCategories from "../lib/categories"
 import { useEffect, useState } from "react"
 import submitAnswers from "../lib/answers"
 import { useRouter } from "next/navigation"
+import { requireAuth } from "../lib/requireAuth"
 
 export default function Question() {
   const [categories, setCategories] = useState<Category[]>([])
@@ -18,6 +19,11 @@ export default function Question() {
 
     fetchData()
   }, [])
+
+  useEffect(() => {
+    const session = async () => await requireAuth()
+    session()
+  })
 
   const handleChange = (questionId: number, choiceId: number) => {
     setAnswers({
