@@ -1,0 +1,40 @@
+class AuthenticationController < ApplicationController
+  skip_before_action :authenticatable!, only: [ :login_email, :signup_email ]
+
+  include Authenticatable
+
+  def login
+    if @current_user
+      render json: { user: @current_user }, status: :ok
+    else
+      render json: { error: "Unauthorized" }, status: :unauthorized
+    end
+  end
+
+  def login_email
+    credential = UserCredential.find_by(email: params[:email], provider: "email")
+
+    if credential&.authenticate(params[:password])
+      render json: { user: credential.user }
+    else
+      render json: { error: "error" }, status: :unauthorized
+    end
+  end
+
+  def signup_email
+    if UserCredential.exists?(email: params[:email], provider: "email")
+      return render json: { error: "Already exists" }, status: :unprocessable_entity
+    end
+
+    user = User.create!(status: "active")
+
+    credential = user.user_credentials.create!(
+      email: params[:email],
+      password: params[:password],
+      provider: "email",
+      uid: params[:email]
+    )
+
+    render json: { user: user }
+  end
+end
