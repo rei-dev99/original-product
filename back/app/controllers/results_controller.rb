@@ -2,7 +2,7 @@ class ResultsController < ApplicationController
   before_action :set_result, only: %i[ show destroy]
 
   def index
-    @results = Result.all.order(created_at: :desc)
+    @results = @current_user.results.all.order(created_at: :desc)
     render status: :ok, json: @results
   end
 
@@ -47,7 +47,8 @@ class ResultsController < ApplicationController
       db_score: scores[:db],
       web_score: scores[:web],
       dependency_score: dependency_score,
-      advice: advice
+      advice: advice,
+      user_id: @current_user.id
     )
 
     render json: result, status: :created
@@ -60,7 +61,7 @@ class ResultsController < ApplicationController
   private
 
   def set_result
-    @result = Result.find(params[:id])
+    @result = @current_user.results.find(params[:id])
   end
 
   def generate_advice(scores, dependency_score)
