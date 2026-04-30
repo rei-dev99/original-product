@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  skip_before_action :authenticatable!
+
   def index
     @questions = Question.all
     render status: :ok,

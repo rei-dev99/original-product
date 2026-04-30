@@ -1,8 +1,15 @@
+"use server"
+
+import { getBackendJwt } from "./getBackendJwt"
+
 export default async function submitAnswers(answers: { [key: number]: number }) {
+  const jwt = await getBackendJwt()
+
   const res = await fetch("http://localhost:3001/results", {
     method: 'POST',
     headers: {
-    'Content-Type': 'application/json'
+      Authorization: `Bearer ${jwt}`,
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
         answers: answers

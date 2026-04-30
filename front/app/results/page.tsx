@@ -4,9 +4,15 @@ import fetchResults from "../lib/results"
 import type { Result } from "@/types/result"
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { requireAuth } from "../lib/requireAuth";
 
 export default function Result() {
   const [results, setResults] = useState<Result[]>([])
+
+  useEffect(() => {
+    const session = async () => await requireAuth()
+    session()
+  })
 
   useEffect(() => {
     const fetchData = async () => {

@@ -8,7 +8,9 @@
 /.bundle
 
 # Ignore all environment files.
-/.env*
+.env*
+
+config/keys/*.pem
 
 # Ignore all logfiles and tempfiles.
 /log/*
