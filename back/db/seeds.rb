@@ -3,68 +3,117 @@ algo = Category.create!(name: "アルゴリズム基礎")
 db = Category.create!(name: "データベース")
 web = Category.create!(name: "Web基礎")
 
-q1 = Question.create!(content: "エラーが出た時、まず何をしますか？", category: ai)
-q2 = Question.create!(content: "AIの回答に対してどうしますか？", category: ai)
-q3 = Question.create!(content: "AIを1日何回使っていますか？", category: ai)
+# AIに関する質問
+ai_q1 = Question.create!(content: "エラーが出た時、まず何をしますか？", category: ai)
+ai_q2 = Question.create!(content: "AIの回答は、どのように扱いますか？", category: ai)
+ai_q3 = Question.create!(content: "AIを使う前に、自分で確認することはありますか？", category: ai)
+ai_q4 = Question.create!(content: "書いたコードを見て、意図を説明できますか？", category: ai)
+ai_q5 = Question.create!(content: "AIを自分にとってどう使うものだと思いますか？", category: ai)
 
-q4 = Question.create!(content: "for文の役割を説明できますか？", category: algo)
-q5 = Question.create!(content: "if文とfor文を組み合わせて書けますか？", category: algo)
-q6 = Question.create!(content: "fizzbuzzの処理を自力で書けそうですか？", category: algo)
+# アルゴリズムに関する質問
+algo_q1 = Question.create!(content: "if文とfor文を組み合わせて処理の流れを考えられますか？", category: algo)
+algo_q2 = Question.create!(content: "配列の要素を取り出して扱えますか？", category: algo)
+algo_q3 = Question.create!(content: "関数を使って処理をまとめる意図を理解していますか？", category: algo)
+algo_q4 = Question.create!(content: "コードの流れを順番に追って説明できますか？", category: algo)
+algo_q5 = Question.create!(content: "簡単な処理を自分で組み立てるのは得意ですか？", category: algo)
 
-q7 = Question.create!(content: "N+1問題を知っていますか？", category: db)
-q8 = Question.create!(content: "JOINの役割は説明できますか？", category: db)
-q9 = Question.create!(content: "ORMについて説明できますか？", category: db)
+# データベースに関する質問
+db_q1 = Question.create!(content: "テーブル同士の関連付けについて説明できますか？", category: db)
+db_q2 = Question.create!(content: "外部キーの役割を知っていますか？", category: db)
+db_q3 = Question.create!(content: "どのテーブルにどのデータが入るか意識して設計できますか？", category: db)
+db_q4 = Question.create!(content: "JOINが何のために使われるか分かりますか？", category: db)
+db_q5 = Question.create!(content: "ORMを使う目的を説明できますか？", category: db)
 
-q10 = Question.create!(content: "GETとPOSTの違いは？", category: web)
-q11 = Question.create!(content: "404エラーとは何ですか？", category: web)
-q12 = Question.create!(content: "HTTP通信を知っていますか？", category: web)
+# Web技術に関する質問
+web_q1 = Question.create!(content: "GETとPOSTの違いを説明できますか？", category: web)
+web_q2 = Question.create!(content: "HTTPのステータスコードを見て大まかな意味が分かりますか？", category: web)
+web_q3 = Question.create!(content: "HTTP通信の基本的な流れを知っていますか？", category: web)
+web_q4 = Question.create!(content: "CookieとSessionの違いについて説明できますか？", category: web)
+web_q5 = Question.create!(content: "DOMやJSONの役割を理解していますか？", category: web)
 
+# スコアは高ければ良い
 Choice.create!([
-  { content: "エラー文を読み、原因を考えて検索する", score: 3, question: q1 },
-  { content: "自分でコードを見直す", score: 2, question: q1 },
-  { content: "AIにそのまま貼り付ける", score: 1, question: q1 },
+  # AIに関する回答
+  { content: "エラー文を読み、自分で原因を整理してから調べる", score: 3, question: ai_q1 },
+  { content: "まずコードを見直してからAIを使う", score: 2, question: ai_q1 },
+  { content: "すぐにAIに貼り付ける", score: 1, question: ai_q1 },
 
-  { content: "理解できるまで読み直す", score: 3, question: q2 },
-  { content: "なんとなく理解して使う", score: 2, question: q2 },
-  { content: "そのままコピペする", score: 1, question: q2 },
+  { content: "回答をそのまま使わず、内容を確認する", score: 3, question: ai_q2 },
+  { content: "必要な部分だけ参考にする", score: 2, question: ai_q2 },
+  { content: "そのままコピペする", score: 1, question: ai_q2 },
 
-  { content: "10回程度", score: 3, question: q3 },
-  { content: "50回程度", score: 2, question: q3 },
-  { content: "100回程度", score: 1, question: q3 },
+  { content: "まず自分で考えてから使う", score: 3, question: ai_q3 },
+  { content: "分からない時だけ使う", score: 2, question: ai_q3 },
+  { content: "考える前に使うことが多い", score: 1, question: ai_q3 },
 
-  { content: "処理の流れを含めて説明できる", score: 3, question: q4 },
-  { content: "繰り返し処理ということは分かる", score: 2, question: q4 },
-  { content: "よく分からない", score: 1, question: q4 },
+  { content: "意図や動きを説明できる", score: 3, question: ai_q4 },
+  { content: "なんとなくは分かる", score: 2, question: ai_q4 },
+  { content: "説明はできない", score: 1, question: ai_q4 },
 
-  { content: "問題に応じて使い分けられる", score: 3, question: q5 },
-  { content: "なんとなく書ける", score: 2, question: q5 },
-  { content: "書けない", score: 1, question: q5 },
+  { content: "補助ツール", score: 3, question: ai_q5 },
+  { content: "便利な相談相手", score: 2, question: ai_q5 },
+  { content: "答えを全部任せる相手", score: 1, question: ai_q5 },
 
-  { content: "自力で書ける", score: 3, question: q6 },
-  { content: "調べたりAIに聞けば書ける", score: 2, question: q6 },
-  { content: "書けない", score: 1, question: q6 },
+  # アルゴリズムに関する回答
+  { content: "処理の流れを含めて説明できる", score: 3, question: algo_q1 },
+  { content: "繰り返し処理ということは分かる", score: 2, question: algo_q1 },
+  { content: "よく分からない", score: 1, question: algo_q1 },
 
-  { content: "説明できる", score: 3, question: q7 },
-  { content: "聞いたことはある", score: 2, question: q7 },
-  { content: "知らない", score: 1, question: q7 },
+  { content: "要素を取り出して扱える", score: 3, question: algo_q2 },
+  { content: "要素番号を見ながら扱える", score: 2, question: algo_q2 },
+  { content: "ほとんど分からない", score: 1, question: algo_q2 },
 
-  { content: "どんな時に使うか説明できる", score: 3, question: q8 },
-  { content: "名前は知っている", score: 2, question: q8 },
-  { content: "分からない", score: 1, question: q8 },
+  { content: "処理をまとめる意味を説明できる", score: 3, question: algo_q3 },
+  { content: "なんとなく使っている", score: 2, question: algo_q3 },
+  { content: "使い分けが分からない", score: 1, question: algo_q3 },
 
-  { content: "どんな時に使うか説明できて、フレームワークごとにORMを知っている", score: 3, question: q9 },
-  { content: "なんとなく知っている", score: 2, question: q9 },
-  { content: "分からない", score: 1, question: q9 },
+  { content: "順番に追って説明できる", score: 3, question: algo_q4 },
+  { content: "少しなら追える", score: 2, question: algo_q4 },
+  { content: "難しい", score: 1, question: algo_q4 },
 
-  { content: "用途の違いまで説明できる", score: 3, question: q10 },
-  { content: "見たことはある", score: 2, question: q10 },
-  { content: "分からない", score: 1, question: q10 },
+  { content: "自分で組み立てられる", score: 3, question: algo_q5 },
+  { content: "簡単ならできる", score: 2, question: algo_q5 },
+  { content: "まだ難しい", score: 1, question: algo_q5 },
 
-  { content: "原因と対処が分かる", score: 3, question: q11 },
-  { content: "見たことはある", score: 2, question: q11 },
-  { content: "分からない", score: 1, question: q11 },
+  # データベースに関する回答
+  { content: "関連付けの意味を説明できる", score: 3, question: db_q1 },
+  { content: "なんとなく知っている", score: 2, question: db_q1 },
+  { content: "分からない", score: 1, question: db_q1 },
 
-  { content: "仕組みや構成、メソッドなど知っている", score: 3, question: q12 },
-  { content: "なんとなく知っている", score: 2, question: q12 },
-  { content: "分からない", score: 1, question: q12 }
+  { content: "役割を説明できる", score: 3, question: db_q2 },
+  { content: "名前は知っている", score: 2, question: db_q2 },
+  { content: "分からない", score: 1, question: db_q2 },
+
+  { content: "データの置き場所を意識できる", score: 3, question: db_q3 },
+  { content: "少し意識している", score: 2, question: db_q3 },
+  { content: "意識していない", score: 1, question: db_q3 },
+
+  { content: "目的を説明できる", score: 3, question: db_q4 },
+  { content: "使ったことはある", score: 2, question: db_q4 },
+  { content: "分からない", score: 1, question: db_q4 },
+
+  { content: "使う目的を説明できる", score: 3, question: db_q5 },
+  { content: "なんとなく知っている", score: 2, question: db_q5 },
+  { content: "分からない", score: 1, question: db_q5 },
+
+  # Web技術に関する回答
+  { content: "違いを説明できる", score: 3, question: web_q1 },
+  { content: "なんとなく分かる", score: 2, question: web_q1 },
+  { content: "分からない", score: 1, question: web_q1 },
+
+  { content: "意味がだいたい分かる", score: 3, question: web_q2 },
+  { content: "見たことはある", score: 2, question: web_q2 },
+  { content: "分からない", score: 1, question: web_q2 },
+
+  { content: "基本的な流れを知っている", score: 3, question: web_q3 },
+  { content: "名前は知っている", score: 2, question: web_q3 },
+  { content: "分からない", score: 1, question: web_q3 },
+
+  { content: "違いを説明できる", score: 3, question: web_q4 },
+  { content: "なんとなく知っている", score: 2, question: web_q4 },
+  { content: "分からない", score: 1, question: web_q4 },
+
+  { content: "役割を説明できる", score: 3, question: web_q5 },
+  { content: "名前は知っている", score: 2, question: web_q5 },
+  { content: "分からない", score: 1, question: web_q5 }
 ])
