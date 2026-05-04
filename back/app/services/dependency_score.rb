@@ -4,14 +4,14 @@ class DependencyScore
   end
 
   def call
-    scores = set_scores(@answers)
+    scores = set_scores
     dependency_score = calculate_dependency(scores)
     [ scores, dependency_score ]
   end
 
   private
 
-  def set_scores(answers)
+  def set_scores
     scores = {
       ai: 0,
       algorithm: 0,
@@ -19,7 +19,7 @@ class DependencyScore
       web: 0
     }
 
-    answers.each do |question_id, choice_id|
+    @answers.each do |question_id, choice_id|
       choice = Choice.find(choice_id)
       question = choice.question
       category = question.category
@@ -40,29 +40,24 @@ class DependencyScore
   end
 
   def calculate_dependency(scores)
-    # 基礎合計
     base = scores[:algorithm] + scores[:db] + scores[:web]
-    # aiスコア
     ai = scores[:ai]
-    # 基礎力の倍率
-    adjust_base = adjust_base(base)
+    adjusted_base = adjust_base(base)
 
     dependency = 0
 
     if ai == 0
-      dependency
+      dependency = 100
     else
       ideal_base = ai * 3
-      if adjust_base >= ideal_base
+      if adjusted_base >= ideal_base
         dependency = 0
       else
-        dependency = ((ideal_base - adjust_base).to_f / ideal_base)
+        dependency = ((ideal_base - adjusted_base).to_f / ideal_base) * 100
       end
     end
 
-    dependency_score = (dependency * 100).floor
-
-    dependency_score
+    dependency.floor
   end
 
   def adjust_base(score)
