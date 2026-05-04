@@ -21,7 +21,7 @@ export default function ResultDetail() {
 	useEffect(() => {
 		const session = async () => await requireAuth();
 		session();
-	});
+	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -62,10 +62,17 @@ export default function ResultDetail() {
 		},
 	];
 
+	const dependencyLevel =
+		result.dependency_score >= 70
+			? "danger"
+			: result.dependency_score >= 40
+				? "warning"
+				: "safe";
+
 	return (
 		<div className="text-center py-15">
-			<h2 className="text-3xl font-bold mb-2">診断結果ページです。</h2>
-			<div className="flex justify-center items-center gap-6">
+			<h2 className="text-3xl font-bold mb-2">診断結果</h2>
+			<div className="flex justify-center items-center gap-6 px-8">
 				<RadarChart
 					cx={300}
 					cy={250}
@@ -85,9 +92,12 @@ export default function ResultDetail() {
 						fillOpacity={0.6}
 					/>
 				</RadarChart>
-				<div key={result.id}>
+				<div key={result.id} className="w-1/2">
 					<p>AI依存度は{result.dependency_score}%です。</p>
-					<p>{result.advice}</p>
+					{dependencyLevel === "danger" && <p>🔴 要注意</p>}
+					{dependencyLevel === "warning" && <p>🟡 注意</p>}
+					{dependencyLevel === "safe" && <p>🟢 良好</p>}
+					<p className="whitespace-pre-line text-left mt-6">{result.advice}</p>
 				</div>
 			</div>
 		</div>
