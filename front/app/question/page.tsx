@@ -10,8 +10,9 @@ import { requireAuth } from "../lib/requireAuth";
 export default function Question() {
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [answers, setAnswers] = useState<{ [key: number]: number }>({});
-
 	const [currentCategoryIndex, setcurrentCategoryIndex] = useState<number>(0);
+
+	const router = useRouter();
 
 	function nextCategory() {
 		setcurrentCategoryIndex((index) => index + 1);
@@ -38,8 +39,6 @@ export default function Question() {
 		});
 	};
 
-	const router = useRouter();
-
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -63,62 +62,103 @@ export default function Question() {
 		return answeredIds.includes(id);
 	});
 
+	const onScrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		});
+	}
+
+	useEffect(() => {
+		onScrollToTop();
+	}, [currentCategoryIndex])
+
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className="text-center flex flex-col gap-6 py-15"
-		>
-			{currentCategory ? (
-				<div className="flex flex-col gap-2" key={currentCategory.id}>
-					<h2 className="text-3xl font-bold mb-4">{currentCategory.name}</h2>
-					{currentCategory.questions.map((question) => (
-						<div key={question.id}>
-							<h3 className="text-2xl font-bold mb-2">{question.content}</h3>
-							{question.choices.map((choice) => (
-								<div className="flex flex-col gap-2" key={choice.id}>
-									<input
-										id={`choice-${choice.id}`}
-										type="radio"
-										className="hidden peer"
-										name={`question-${question.id}`}
-										value={choice.id}
-										onChange={() => handleChange(question.id, choice.id)}
-									/>
-									<label
-										htmlFor={`choice-${choice.id}`}
-										key={choice.id}
-										className="flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-2xl border-gray-900 p-2 my-4 text-3xl peer-checked:bg-green-200"
-									>
-										{choice.content}
-									</label>
+		<div className="min-h-screen bg-slate-50 px-4 py-10">
+			<form
+				onSubmit={handleSubmit}
+				className="mx-auto w-full max-w-4xl rounded-3xl bg-white p-6 shadow-lg ring-1 ring-slate-200"
+			>
+				{currentCategory ? (
+					<div className="flex flex-col gap-8" key={currentCategory.id}>
+						<div className="text-center">
+							<p className="mb-2 text-sm font-semibold tracking-wide text-sky-600">
+								{currentCategoryIndex + 1} / {categories.length}
+							</p>
+							<h2 className="text-3xl font-bold tracking-tight text-slate-900">
+								{currentCategory.name}
+							</h2>
+							<p className="mt-3 text-sm text-slate-500">
+								当てはまるものを1つ選んでください。
+							</p>
+						</div>
+
+						<div className="flex flex-col gap-6 border border-slate-200 bg-slate-50 rounded-2xl shadow-sm">
+							{currentCategory.questions.map((question, questionIndex) => (
+								<div
+									key={question.id}
+									className="p-5"
+								>
+									<div className="mb-4 flex items-start gap-3">
+										<span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-600 text-sm font-bold text-white">
+											{questionIndex + 1}
+										</span>
+										<h3 className="text-lg font-bold leading-7 text-slate-900">
+											{question.content}
+										</h3>
+									</div>
+
+									{question.choices.map((choice) => (
+										<div key={choice.id} className="w-full">
+											<input
+												id={`choice-${choice.id}`}
+												type="radio"
+												className="hidden peer"
+												name={`question-${question.id}`}
+												value={choice.id}
+												onChange={() => handleChange(question.id, choice.id)}
+											/>
+											<label
+												htmlFor={`choice-${choice.id}`}
+												key={choice.id}
+												className="block w-full cursor-pointer rounded-xl border-2 border-slate-300 bg-white p-4 my-4 text-left text-lg font-medium text-slate-800 shadow-sm transition-all duration-200
+											hover:border-sky-400 hover:bg-sky-50 hover:shadow-md
+											peer-checked:border-sky-500 peer-checked:bg-sky-50 peer-checked:text-sky-900 peer-checked:shadow-lg peer-checked:ring-2 peer-checked:ring-sky-500/20
+											md:p-6 md:text-xl md:leading-relaxed"
+											>
+												{choice.content}
+											</label>
+										</div>
+									))}
 								</div>
 							))}
 						</div>
-					))}
-				</div>
-			) : (
-				"読み込み中"
-			)}
-			<div>
-				{currentCategoryIndex === categories.length - 1 ? (
-					<button
-						className="px-6 py-2 bg-sky-500 hover:bg-sky-700 rounded-2xl text-white"
-						type="submit"
-						disabled={!disable}
-					>
-						送信
-					</button>
+					</div>
 				) : (
-					<button
-						className="px-6 py-2 bg-sky-500 hover:bg-sky-700 rounded-2xl text-white"
-						type="button"
-						onClick={nextCategory}
-						disabled={!disable}
-					>
-						次へ
-					</button>
+					<div className="py-20 text-center text-slate-500">読み込み中...</div>
 				)}
-			</div>
-		</form>
+
+				<div className="mt-10 flex justify-center">
+					{currentCategoryIndex === categories.length - 1 ? (
+						<button
+							className="rounded-2xl bg-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-40"
+							type="submit"
+							disabled={!disable}
+						>
+							送信
+						</button>
+					) : (
+						<button
+							className="rounded-2xl bg-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-600 disabled:cursor-not-allowed disabled:opacity-40"
+							type="button"
+							onClick={nextCategory}
+							disabled={!disable}
+						>
+							次へ
+						</button>
+					)}
+				</div>
+			</form>
+		</div>
 	);
 }
