@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_20_123250) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_30_112019) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,7 +45,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_123250) do
     t.integer "db_score", null: false
     t.integer "dependency_score", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.integer "web_score", null: false
+    t.index ["user_id"], name: "index_results_on_user_id"
   end
 
   create_table "user_credentials", force: :cascade do |t|
@@ -69,5 +71,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_20_123250) do
 
   add_foreign_key "choices", "questions"
   add_foreign_key "questions", "categories"
+  add_foreign_key "results", "users"
   add_foreign_key "user_credentials", "users"
 end

@@ -12,7 +12,7 @@ export default function Result() {
 	useEffect(() => {
 		const session = async () => await requireAuth();
 		session();
-	});
+	}, []);
 
 	useEffect(() => {
 		const fetchData = async () => {
