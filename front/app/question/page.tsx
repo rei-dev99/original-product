@@ -72,10 +72,10 @@ export default function Question() {
 				<div className="flex flex-col gap-2" key={currentCategory.id}>
 					<h2 className="text-3xl font-bold mb-4">{currentCategory.name}</h2>
 					{currentCategory.questions.map((question) => (
-						<div>
+						<div key={question.id}>
 							<h3 className="text-2xl font-bold mb-2">{question.content}</h3>
 							{question.choices.map((choice) => (
-								<div className="flex flex-col gap-2">
+								<div className="flex flex-col gap-2" key={choice.id}>
 									<input
 										id={`choice-${choice.id}`}
 										type="radio"
