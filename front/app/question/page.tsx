@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Category } from "@/types/category";
 import submitAnswers from "../lib/answers";
 import fetchCategories from "../lib/categories";
