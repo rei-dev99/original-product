@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Category } from "@/types/category";
 import submitAnswers from "../lib/answers";
 import fetchCategories from "../lib/categories";
@@ -16,6 +16,13 @@ export default function Question() {
 
 	function nextCategory() {
 		setcurrentCategoryIndex((index) => index + 1);
+
+		setTimeout(() => {
+			window.scrollTo({
+				top: 0,
+				behavior: "smooth",
+			});
+		}, 0);
 	}
 
 	useEffect(() => {
@@ -32,10 +39,23 @@ export default function Question() {
 		session();
 	}, []);
 
-	const handleChange = (questionId: number, choiceId: number) => {
+	const questionRefs = useRef<Record<number, HTMLDivElement | null>>({});
+
+	const handleChange = (
+		questionId: number,
+		choiceId: number,
+		questionIndex: number,
+	) => {
 		setAnswers({
 			...answers,
 			[questionId]: choiceId,
+		});
+
+		const nextQuestion = questionRefs.current[questionIndex + 1];
+
+		nextQuestion?.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
 		});
 	};
 
@@ -62,17 +82,6 @@ export default function Question() {
 		return answeredIds.includes(id);
 	});
 
-	const onScrollToTop = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: "smooth",
-		});
-	}
-
-	useEffect(() => {
-		onScrollToTop();
-	}, [currentCategoryIndex])
-
 	return (
 		<div className="min-h-screen bg-slate-50 px-4 py-10">
 			<form
@@ -85,6 +94,7 @@ export default function Question() {
 							<p className="mb-2 text-sm font-semibold tracking-wide text-sky-600">
 								{currentCategoryIndex + 1} / {categories.length}
 							</p>
+							<progress value={currentCategoryIndex} max={4} />
 							<h2 className="text-3xl font-bold tracking-tight text-slate-900">
 								{currentCategory.name}
 							</h2>
@@ -98,6 +108,9 @@ export default function Question() {
 								<div
 									key={question.id}
 									className="p-5"
+									ref={(el) => {
+										questionRefs.current[questionIndex] = el;
+									}}
 								>
 									<div className="mb-4 flex items-start gap-3">
 										<span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-600 text-sm font-bold text-white">
@@ -116,7 +129,9 @@ export default function Question() {
 												className="hidden peer"
 												name={`question-${question.id}`}
 												value={choice.id}
-												onChange={() => handleChange(question.id, choice.id)}
+												onChange={() =>
+													handleChange(question.id, choice.id, questionIndex)
+												}
 											/>
 											<label
 												htmlFor={`choice-${choice.id}`}
