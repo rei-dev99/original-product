@@ -6,7 +6,7 @@ export async function GET(request: Request) {
 	const session = await auth();
 	const email = session?.user?.email;
 
-	const redirectUrl = new URL("/", request.url);
+	const redirectUrl = new URL("/mypage", request.url);
 
 	if (!email) return NextResponse.redirect(redirectUrl);
 
