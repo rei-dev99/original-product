@@ -10,29 +10,43 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		Credentials({
 			credentials: {
 				email: {},
+				loginType: {},
 				password: {},
 			},
 			authorize: async (credentials) => {
-				try {
-					const { email, password } =
-						await signInSchema.parseAsync(credentials);
-
-					const res = await fetch("http://localhost:3001/login_email", {
+				if (credentials.loginType === "guest") {
+					const res = await fetch("http://localhost:3001/guest_login", {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ email, password }),
 					});
-
 					if (!res.ok) return null;
-
 					const data = await res.json();
-
 					return {
 						id: data.user.id,
-						email: credentials.email as string,
+						provider: data.user.provider,
+						uid: data.user.uid,
+						email: data.user.email as string,
 					};
-				} catch {
-					return null;
+				} else {
+					try {
+						const { email, password } =
+							await signInSchema.parseAsync(credentials);
+						const res = await fetch("http://localhost:3001/login_email", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ email, password }),
+						});
+						if (!res.ok) return null;
+						const data = await res.json();
+						return {
+							id: data.user.id,
+							provider: data.user.provider,
+							uid: data.user.uid,
+							email: credentials.email as string,
+						};
+					} catch {
+						return null;
+					}
 				}
 			},
 		}),
@@ -54,8 +68,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			}
 
 			if (account?.provider === "credentials" && user) {
-				token.provider = "email";
-				token.uid = user.email;
+				token.provider = user.provider;
+				token.uid = user.uid;
 			}
 			return token;
 		},
