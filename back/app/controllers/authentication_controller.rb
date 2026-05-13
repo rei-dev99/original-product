@@ -15,7 +15,7 @@ class AuthenticationController < ApplicationController
     credential = UserCredential.find_by(email: params[:email], provider: "email")
 
     if credential&.authenticate(params[:password])
-      render json: { user: credential.user }
+      render json: { user: credential }
     else
       render json: { error: "error" }, status: :unauthorized
     end
