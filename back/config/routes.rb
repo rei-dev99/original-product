@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   post "login", to: "authentication#login"
   post "login_email", to: "authentication#login_email"
   post "signup_email", to: "authentication#signup_email"
+  post "guest_login", to: "guest_sessions#guest_login"
 end
