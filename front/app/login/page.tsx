@@ -4,26 +4,26 @@ import { signIn } from "@/auth";
 import Login from "@/components/atoms/Login";
 
 export default function LoginPage() {
+	async function Submit(formData: FormData) {
+		"use server";
+		const email: FormDataEntryValue | null = formData.get("email");
+		const password: FormDataEntryValue | null = formData.get("password");
+
+		if (!email || !password) {
+			return;
+		}
+
+		await signIn("credentials", {
+			redirectTo: "/api/auth/callback",
+			email,
+			password,
+		});
+	}
+
 	return (
 		<div className="py-12 flex justify-center h-screen">
 			<div className="w-full max-w-lg bg-white shadow-md rounded px-8 py-8">
-				<form
-					className="border-b border-dashed pb-6"
-					action={async (formData) => {
-						"use server";
-						try {
-							await signIn("credentials", formData, {
-								redirectTo: "/api/auth/callback",
-							});
-						} catch (error) {
-							if (error instanceof AuthError) {
-								console.error("ログイン失敗");
-								return;
-							}
-							throw error;
-						}
-					}}
-				>
+				<form className="border-b border-dashed pb-6" action={Submit}>
 					<div className="mb-4">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
 							メールアドレス
