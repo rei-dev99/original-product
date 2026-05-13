@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { handleLogin } from "@/actions/handleLogin";
 
 export default function Home() {
 	return (
@@ -21,12 +22,15 @@ export default function Home() {
 				>
 					診断してみる
 				</Link>
-				<Link
-					href={"/login"}
-					className="rounded-2xl bg-orange-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 mt-6"
-				>
-					ゲストで試す
-				</Link>
+				<form action={handleLogin}>
+					<input type="hidden" name="guest" value="guest" />
+					<button
+						type="submit"
+						className="rounded-2xl bg-orange-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 mt-6"
+					>
+						ゲストで試す
+					</button>
+				</form>
 			</section>
 
 			<section className="flex flex-1 w-full max-w-7xl flex-col py-16 px-8 bg-white">
