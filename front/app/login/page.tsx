@@ -1,29 +1,12 @@
 import Link from "next/link";
-import { AuthError } from "next-auth";
-import { signIn } from "@/auth";
+import { handleLogin } from "@/actions/handleLogin";
 import Login from "@/components/atoms/Login";
 
 export default function LoginPage() {
-	async function Submit(formData: FormData) {
-		"use server";
-		const email: FormDataEntryValue | null = formData.get("email");
-		const password: FormDataEntryValue | null = formData.get("password");
-
-		if (!email || !password) {
-			return;
-		}
-
-		await signIn("credentials", {
-			redirectTo: "/api/auth/callback",
-			email,
-			password,
-		});
-	}
-
 	return (
 		<div className="py-12 flex justify-center h-screen">
 			<div className="w-full max-w-lg bg-white shadow-md rounded px-8 py-8">
-				<form className="border-b border-dashed pb-6" action={Submit}>
+				<form className="border-b border-dashed pb-6" action={handleLogin}>
 					<div className="mb-4">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
 							メールアドレス
