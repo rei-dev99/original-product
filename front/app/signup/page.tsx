@@ -1,36 +1,12 @@
 import Link from "next/link";
-import { signIn } from "@/auth";
+import handleSignup from "@/actions/handleSignup";
 import Login from "@/components/atoms/Login";
 
 export default function SignupPage() {
 	return (
 		<div className="py-12 flex justify-center h-screen">
 			<div className="w-full max-w-lg bg-white shadow-md rounded px-8 py-8">
-				<form
-					className="border-b border-dashed pb-6"
-					action={async (formData) => {
-						"use server";
-
-						const email = formData.get("email");
-						const password = formData.get("password");
-
-						const res = await fetch("http://localhost:3001/signup_email", {
-							method: "POST",
-							headers: { "Content-Type": "application/json" },
-							body: JSON.stringify({ email, password }),
-						});
-
-						if (res.ok) {
-							await signIn("credentials", {
-								email,
-								password,
-								redirectTo: "/api/auth/callback",
-							});
-						} else {
-							console.error("Signup failed");
-						}
-					}}
-				>
+				<form className="border-b border-dashed pb-6" action={handleSignup}>
 					<div className="mb-4">
 						<label className="block text-gray-700 text-sm font-bold mb-2">
 							メールアドレス
