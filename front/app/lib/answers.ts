@@ -7,7 +7,7 @@ export default async function submitAnswers(answers: {
 }) {
 	const jwt = await getBackendJwt();
 
-	const res = await fetch("http://localhost:3001/results", {
+	const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/results`, {
 		method: "POST",
 		headers: {
 			Authorization: `Bearer ${jwt}`,
