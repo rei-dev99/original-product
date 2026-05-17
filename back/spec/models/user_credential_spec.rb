@@ -82,5 +82,15 @@ RSpec.describe UserCredential, type: :model do
         end
       end
     end
+
+    describe 'association validation' do
+      context 'when user is missing' do
+        let(:user_credential) { build(:user_credential, user: nil) }
+
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
+      end
+    end
   end
 end
