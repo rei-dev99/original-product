@@ -1,8 +1,11 @@
 import Link from "next/link";
 import handleSignup from "@/actions/handleSignup";
 import Login from "@/components/atoms/Login";
+import { requireSession } from "../lib/requireSession";
 
-export default function SignupPage() {
+export default async function SignupPage() {
+	await requireSession();
+
 	return (
 		<div className="py-12 flex justify-center h-screen">
 			<div className="w-full max-w-lg bg-white shadow-md rounded px-8 py-8">
