@@ -1,4 +1,4 @@
-class AuthenticationController < ApplicationController
+class Api::V1::AuthenticationController < ApplicationController
   skip_before_action :authenticatable!, only: [ :login_email, :signup_email ]
 
   include Authenticatable

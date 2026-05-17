@@ -1,4 +1,4 @@
-class HealthController < ApplicationController
+class Api::V1::HealthController < ApplicationController
   skip_before_action :authenticatable!
 
   def index

@@ -1,4 +1,4 @@
-class ResultsController < ApplicationController
+class Api::V1::ResultsController < ApplicationController
   before_action :set_result, only: %i[ show destroy]
 
   def index
