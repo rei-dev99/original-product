@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { auth } from "@/auth";
 
-export default function Header() {
+export default async function Header() {
+	const session = await auth();
+
 	return (
 		<header className="bg-blue-600 p-4 shadow-md">
 			<h1 className="text-center text-3xl font-bold text-white">
@@ -8,12 +11,21 @@ export default function Header() {
 			</h1>
 			<p className="text-center text-xl text-white">〜わかるコード診断〜</p>
 			<nav className="mt-4 text-center space-x-4">
-				<Link
-					href="/"
-					className="rounded px-4 py-2 text-white transition-all hover:bg-blue-700"
-				>
-					トップ
-				</Link>
+				{session ? (
+					<Link
+						href="/mypage"
+						className="rounded px-4 py-2 text-white transition-all hover:bg-blue-700"
+					>
+						マイページ
+					</Link>
+				) : (
+					<Link
+						href="/"
+						className="rounded px-4 py-2 text-white transition-all hover:bg-blue-700"
+					>
+						トップ
+					</Link>
+				)}
 				<Link
 					href="/question"
 					className="rounded px-4 py-2 text-white transition-all hover:bg-blue-700"

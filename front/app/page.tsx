@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { handleLogin } from "@/actions/handleLogin";
+import { auth } from "@/auth";
 
-export default function Home() {
+export default async function Home() {
+	const session = await auth();
+
 	return (
 		<div className="flex flex-col flex-1 items-center justify-center bg-zinc-50">
 			<section className="flex flex-col items-center text-white bg-black w-full py-10">
@@ -16,21 +19,32 @@ export default function Home() {
 					<br />
 					そこから適切なアドバイスをもとに学習方法の改善を行います。
 				</p>
-				<Link
-					href={"/mypage"}
-					className="rounded-2xl bg-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-600"
-				>
-					診断してみる
-				</Link>
-				<form action={handleLogin}>
-					<input type="hidden" name="guest" value="guest" />
-					<button
-						type="submit"
-						className="rounded-2xl bg-orange-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 mt-6"
+				{session ? (
+					<Link
+						href={"/mypage"}
+						className="rounded-2xl bg-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-600"
 					>
-						ゲストで試す
-					</button>
-				</form>
+						マイページへ行く
+					</Link>
+				) : (
+					<>
+						<Link
+							href={"/login"}
+							className="rounded-2xl bg-sky-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-600"
+						>
+							診断してみる
+						</Link>
+						<form action={handleLogin}>
+							<input type="hidden" name="guest" value="guest" />
+							<button
+								type="submit"
+								className="rounded-2xl bg-orange-500 px-8 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-orange-600 mt-6"
+							>
+								ゲストで試す
+							</button>
+						</form>
+					</>
+				)}
 			</section>
 
 			<section className="flex flex-1 w-full max-w-7xl flex-col py-16 px-8 bg-white">
