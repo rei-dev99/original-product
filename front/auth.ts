@@ -15,10 +15,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			},
 			authorize: async (credentials) => {
 				if (credentials.loginType === "guest") {
-					const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/guest_login`, {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-					});
+					const res = await fetch(
+						`${process.env.NEXT_PUBLIC_API_BASE_URL}/guest_login`,
+						{
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+						},
+					);
 					if (!res.ok) return null;
 					const data = await res.json();
 					return {
@@ -31,11 +34,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 					try {
 						const { email, password } =
 							await signInSchema.parseAsync(credentials);
-						const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/login_email`, {
-							method: "POST",
-							headers: { "Content-Type": "application/json" },
-							body: JSON.stringify({ email, password }),
-						});
+						const res = await fetch(
+							`${process.env.NEXT_PUBLIC_API_BASE_URL}/login_email`,
+							{
+								method: "POST",
+								headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({ email, password }),
+							},
+						);
 						if (!res.ok) return null;
 						const data = await res.json();
 						return {
