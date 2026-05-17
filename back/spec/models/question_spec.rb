@@ -30,5 +30,15 @@ RSpec.describe Question, type: :model do
         end
       end
     end
+
+    describe 'association validation' do
+      context 'when category is missing' do
+        let(:question) { build(:question, category: nil) }
+
+        it 'is invalid' do
+          expect(question).to be_invalid
+        end
+      end
+    end
   end
 end
