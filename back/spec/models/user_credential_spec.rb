@@ -1,32 +1,85 @@
 require 'rails_helper'
 
 RSpec.describe UserCredential, type: :model do
-  describe 'バリデーションチェック' do
-    context 'バリデーション成功' do
-      let(:user_credential) { build(:user_credential) }
+  describe 'validations' do
+    describe 'provider別認証' do
+      context 'when provider is email' do
+        let(:user_credential) { build(:user_credential) }
 
-      it '全てのユーザー登録情報が入っていること' do
-        expect(user_credential).to be_valid
+        it 'is valid' do
+          expect(user_credential).to be_valid
+        end
+      end
+
+      context 'when provider is guest' do
+        let(:user_credential) { build(:user_credential, :guest) }
+
+        it 'is valid' do
+          expect(user_credential).to be_valid
+        end
+      end
+
+      context 'when provider is google' do
+        let(:user_credential) { build(:user_credential, :google) }
+
+        it 'is valid' do
+          expect(user_credential).to be_valid
+        end
       end
     end
 
-    context 'バリデーション失敗' do
-      let(:user_credential) { build(:user_credential, email: nil) }
+    describe 'presence validation' do
+      context 'when provider is blank' do
+        let(:user_credential) { build(:user_credential, provider: nil) }
 
-      it 'emailが空' do
-        is_valid = user_credential.valid?
-        expect(user_credential).to be_invalid
-        expect(user_credential.errors[:email]).to include("can't be blank")
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
+      end
+
+      context 'when uid is blank' do
+        let(:user_credential) { build(:user_credential, uid: nil) }
+
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
+      end
+
+      context 'when email is blank' do
+        let(:user_credential) { build(:user_credential, email: nil) }
+
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
+      end
+
+      context 'when password is blank' do
+        let(:user_credential) { build(:user_credential, password: nil) }
+
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
       end
     end
 
-    context 'バリデーション失敗' do
-      let(:user_credential) { build(:user_credential, email: nil) }
+    describe 'uniqueness validation' do
+      context 'when email already exists' do
+        let!(:user_credential_before) { create(:user_credential, email: "hogehoge@hoge.com") }
+        let(:user_credential) { build(:user_credential, email: "hogehoge@hoge.com") }
 
-      it 'emailが空' do
-        is_valid = user_credential.valid?
-        expect(user_credential).to be_invalid
-        expect(user_credential.errors[:email]).to include("can't be blank")
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
+      end
+    end
+
+    describe 'length validation' do
+      context 'when password is shorter than 8 chars' do
+        let(:user_credential) { build(:user_credential, password: "passwor") }
+
+        it 'is invalid' do
+          expect(user_credential).to be_invalid
+        end
       end
     end
   end
