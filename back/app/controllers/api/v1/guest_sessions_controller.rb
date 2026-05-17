@@ -1,4 +1,4 @@
-class GuestSessionsController < ApplicationController
+class Api::V1::GuestSessionsController < ApplicationController
   skip_before_action :authenticatable!
 
   def guest_login

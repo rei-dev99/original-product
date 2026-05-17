@@ -1,4 +1,4 @@
-class CategoriesController < ApplicationController
+class Api::V1::CategoriesController < ApplicationController
   def index
     @categories = Category.all.includes(questions: :choices)
     render status: :ok,

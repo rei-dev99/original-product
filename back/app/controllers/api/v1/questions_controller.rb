@@ -1,4 +1,4 @@
-class QuestionsController < ApplicationController
+class Api::V1::QuestionsController < ApplicationController
   skip_before_action :authenticatable!
 
   def index
