@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do
-    describe 'status validation' do
-      context 'when attributes are valid' do
-        let(:user) { build(:user) }
+    context 'when all attributes are valid' do
+      let(:user) { build(:user) }
 
-        it 'is valid' do
-          expect(user).to be_valid
-        end
+      it 'is valid' do
+        expect(user).to be_valid
       end
+    end
 
+    describe 'status validation' do
       context 'when status is deleted' do
         let(:user) { build(:user, status: "deleted") }
 

@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Question, type: :model do
   describe 'validations' do
-    describe 'presence validation' do
-      context 'when attributes are valid' do
-        let(:question) { build(:question) }
+    context 'when all attributes are valid' do
+      let(:question) { build(:question) }
 
-        it 'is valid' do
-          expect(question).to be_valid
-        end
+      it 'is valid' do
+        expect(question).to be_valid
       end
+    end
 
+    describe 'presence validation' do
       context 'when content is blank' do
         let(:question) { build(:question, content: nil) }
 

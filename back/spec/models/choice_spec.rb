@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Choice, type: :model do
   describe 'validations' do
-    describe 'presence validation' do
-      context 'when attributes are valid' do
-        let(:choice) { build(:choice) }
+    context 'when all attributes are valid' do
+      let(:choice) { build(:choice) }
 
-        it 'is valid' do
-          expect(choice).to be_valid
-        end
+      it 'is valid' do
+        expect(choice).to be_valid
       end
+    end
 
+    describe 'presence validation' do
       context 'when content is blank' do
         let(:choice) { build(:choice, content: nil) }
 

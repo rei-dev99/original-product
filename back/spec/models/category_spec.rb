@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Category, type: :model do
   describe 'validations' do
-    describe 'presence validation' do
-      context 'when attributes are valid' do
-        let(:category) { build(:category) }
+    context 'when all attributes are valid' do
+      let(:category) { build(:category) }
 
-        it 'is valid' do
-          expect(category).to be_valid
-        end
+      it 'is valid' do
+        expect(category).to be_valid
       end
+    end
 
+    describe 'presence validation' do
       context 'when name is blank' do
         let(:category) { build(:category, name: nil) }
 
