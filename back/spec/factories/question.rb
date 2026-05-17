@@ -1,7 +1,6 @@
 FactoryBot.define do
-  association :category
-
   factory :question do
+    association :category
     sequence(:content) { |n| "question_#{n}"  }
   end
 end
